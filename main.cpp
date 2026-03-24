@@ -1,5 +1,9 @@
-#include <iostream>
+#include "LLLong.hpp"
 
 int main() {
-  std::cout << "hello, world!";
+  LLLong a, c;
+  a.getnum(std::cin);
+  c.getnum(std::cin);
+  a += c;
+  a.printnum();
 }
