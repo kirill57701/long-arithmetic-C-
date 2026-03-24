@@ -13,6 +13,7 @@ struct LLLong {
     void operator+=(LLLong q);
     size_t size();
     void operator=(LLLong q);
+    void operator-=(LLLong a);
   private:
     std::string s;
     std::deque<int> d;
@@ -43,6 +44,17 @@ void LLLong::operator=(LLLong q) {
   s = q.s;
   si = q.si;
 }
+
+/*void LLLong::operator-=(LLLong q) {
+  if (q.si > si) {
+    int ost = 0;
+    for (size_t i = q.si - 1, j = si - 1; i >= 0 && j >= 0; --i, --j) {
+      if (q.d[i] >= d[i]) {
+
+      }
+    }
+  }
+}*/
 
 void LLLong::operator+=(LLLong q) {
   if (q.si > si) {
@@ -101,6 +113,25 @@ void LLLong::operator+=(LLLong q) {
         int c = d[i] + ost;
         ost = c/10;
         l.push_front(c%10);  
+      }
+    }
+    if (ost)
+      l.push_front(ost);
+    d = l;
+    si = d.size();
+  } else {
+    int ost = 0;
+    std::deque<int> l;
+    for (size_t i = q.si - 1, j = si - 1; i >= 0 && j >= 0; --i, --j) {
+      if (i == 0 || j == 0) {
+        int c = q.d[i] + d[j] + ost;
+        ost = c/10;
+        l.push_front(c%10);
+        break;
+      } else {
+        int c = q.d[i] + d[j] + ost;
+        ost = c/10;
+        l.push_front(c%10);
       }
     }
     if (ost)
