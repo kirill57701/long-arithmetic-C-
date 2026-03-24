@@ -48,12 +48,19 @@ void LLLong::operator+=(LLLong q) {
   if (q.si > si) {
     int ost = 0;
     std::deque<int> l;
-    for (size_t i = q.si - 1; i > si - 1; --i) {
-      int c = d[i - si] + q.d[i] + ost;
-      ost = c/10;
-      l.push_front(c%10);
+    for (size_t i = q.si - 1, j = si - 1; i >= 0 && j >= 0; --i, --j) {
+      if (i == 0 || j == 0) {
+        int c = q.d[i] + d[j] + ost;
+        ost = c/10;
+        l.push_front(c%10);
+        break;
+      } else {
+        int c = q.d[i] + d[j] + ost;
+        ost = c/10;
+        l.push_front(c%10);
+      }
     }
-    for (size_t i = si - 1; i >= 0; --i) {
+    for (size_t i = q.si - 1 - si; i >= 0; --i) {
       if (i == 0) {
         int c = q.d[i] + ost;
         ost = c/10;
@@ -62,20 +69,29 @@ void LLLong::operator+=(LLLong q) {
       } else {
         int c = q.d[i] + ost;
         ost = c/10;
-        l.push_front(c%10);
+        l.push_front(c%10);  
       }
     }
+    if (ost)
+      l.push_front(ost);
     d = l;
     si = d.size();
-  } else {
+  } else if (q.si < si) {
     int ost = 0;
     std::deque<int> l;
-    for (size_t i = si - 1; i > q.si - 1; --i) {
-      int c = q.d[i - q.si] + d[i] + ost;
-      ost = c/10;
-      l.push_front(c%10);
+    for (size_t i = q.si - 1, j = si - 1; i >= 0 && j >= 0; --i, --j) {
+      if (i == 0 || j == 0) {
+        int c = q.d[i] + d[j] + ost;
+        ost = c/10;
+        l.push_front(c%10);
+        break;
+      } else {
+        int c = q.d[i] + d[j] + ost;
+        ost = c/10;
+        l.push_front(c%10);
+      }
     }
-    for (size_t i = q.si - 1; i >= 0; --i) {
+    for (size_t i = si - 1 - q.si; i >= 0; --i) {
       if (i == 0) {
         int c = d[i] + ost;
         ost = c/10;
@@ -84,9 +100,11 @@ void LLLong::operator+=(LLLong q) {
       } else {
         int c = d[i] + ost;
         ost = c/10;
-        l.push_front(c%10);
+        l.push_front(c%10);  
       }
     }
+    if (ost)
+      l.push_front(ost);
     d = l;
     si = d.size();
   }
